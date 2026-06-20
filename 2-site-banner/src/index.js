@@ -17,23 +17,26 @@ const REDIS_KEYS = {
   bannerKey: "app:banner"
 }
 
+// SET  DATA IN REDIS
 app.post("/banner", async (req, res)=>{
   console.log("Message Body: ", req.body)
   await redis.set(REDIS_KEYS.bannerKey, req.body.message ?? "Default description");
   return res.json({success: true});
 })
 
-
+// GET  DATA IN REDIS
 app.get("/banner", async (req,res) => {
   const data = await redis.get(REDIS_KEYS.bannerKey)
   return res.json({data})
 })
 
+// DELETE  DATA IN REDIS
 app.delete("/banner", async(req,res)=>{
   await redis.del(REDIS_KEYS.bannerKey)
   return res.json({success: true})
 })
 
+// CHECK EXISTS DATA IN REDIS
 app.get("/banner/exists", async (req, res)=> {
   const data = await redis.exists(REDIS_KEYS.bannerKey);
   return res.json({exists: Boolean(data)})
